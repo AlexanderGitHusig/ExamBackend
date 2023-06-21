@@ -1,12 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package errorhandling;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.eclipse.persistence.exceptions.DatabaseException;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
@@ -17,26 +14,27 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-/**
- *
- * @author jobe
- */
-
 @Provider
-public class GenericExceptionMapper implements ExceptionMapper<Throwable>  {
-  static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+public class GenericExceptionMapper implements ExceptionMapper<Throwable>
+{
+
+    static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
     @Context
     ServletContext context;
 
     @Override
-    public Response toResponse(Throwable ex) {
+    public Response toResponse(Throwable ex)
+    {
         Logger.getLogger(GenericExceptionMapper.class.getName()).log(Level.SEVERE, null, ex);
         Response.StatusType type = getStatusType(ex);
         ExceptionDTO err;
-        if (ex instanceof WebApplicationException) {
+        if (ex instanceof WebApplicationException)
+        {
             err = new ExceptionDTO(type.getStatusCode(), ((WebApplicationException) ex).getMessage());
+        } else if (ex instanceof DatabaseException) {
+            err = new ExceptionDTO(500, "Internal Server Problem. We are sorry for the inconvenience");
         } else {
-
             err = new ExceptionDTO(type.getStatusCode(), type.getReasonPhrase());
         }
         return Response.status(type.getStatusCode())
@@ -45,12 +43,25 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable>  {
                 build();
     }
 
-    private Response.StatusType getStatusType(Throwable ex) {
-        if (ex instanceof WebApplicationException) {
+    private Response.StatusType getStatusType(Throwable ex)
+    {
+        if (ex instanceof WebApplicationException)
+        {
             return ((WebApplicationException) ex).getResponse().getStatusInfo();
         }
         return Response.Status.INTERNAL_SERVER_ERROR;
-
     }
-        
+
+    //Small hack, to provide json-error response in the filter
+    public static Response makeErrRes(String msg, int status)
+    {
+        ExceptionDTO error = new ExceptionDTO(status, msg);
+        String errJson = gson.toJson(error);
+        return Response.status(error.getCode())
+                .entity(errJson)
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+    }
 }
+
+
