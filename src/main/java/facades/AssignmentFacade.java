@@ -46,4 +46,16 @@ public class AssignmentFacade {
 
         return new AssignmentDTO(assignment);
     }
+    public List<AssignmentDTO> getAllAssignments() {
+        EntityManager em = getEntityManager();
+        List<Assignment> assignments;
+        try {
+            assignments = em.createQuery("SELECT a FROM Assignment a", Assignment.class).getResultList();
+
+        } finally {
+            em.close();
+        }
+        return AssignmentDTO.getDtos(assignments);
+    }
+
 }

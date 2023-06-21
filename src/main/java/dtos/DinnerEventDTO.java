@@ -1,7 +1,7 @@
 package dtos;
 
 import entities.Assignment;
-import entities.DinnerEvent;
+import entities.Dinnerevent;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,7 +24,7 @@ public class DinnerEventDTO {
     private int pricePerPerson;
     private List<String> assignments;
 
-    public DinnerEventDTO(DinnerEvent dinnerevent) {
+    public DinnerEventDTO(Dinnerevent dinnerevent) {
         this.id = dinnerevent.getId();
         this.eventName = dinnerevent.getEventName();
         this.time = dinnerevent.getTime();
@@ -46,7 +46,7 @@ public class DinnerEventDTO {
         this.pricePerPerson = pricePerPerson;
     }
 
-    public static List<DinnerEventDTO> getDtos(List<DinnerEvent> dinnerevents) {
+    public static List<DinnerEventDTO> getDtos(List<Dinnerevent> dinnerevents) {
         List<DinnerEventDTO> dinnerEventDTOS = new ArrayList<>();
         dinnerevents.forEach(dinnerevent -> dinnerEventDTOS.add(new DinnerEventDTO(dinnerevent)));
         return dinnerEventDTOS;

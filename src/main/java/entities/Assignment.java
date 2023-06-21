@@ -3,7 +3,9 @@ package entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -28,7 +30,7 @@ public class Assignment {
 
     @ManyToOne
     @JoinColumn(name = "dinnerevent_id")
-    private DinnerEvent dinnerevent;
+    private Dinnerevent dinnerevent;
 
 
 
