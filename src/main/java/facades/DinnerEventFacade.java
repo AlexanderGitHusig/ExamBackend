@@ -44,6 +44,7 @@ public class DinnerEventFacade {
         return new DinnerEventDTO(dinnerevent);
     }
 
+
     //Get all DinnerEvents
     public List<DinnerEventDTO> getAllDinnerEvents() {
         EntityManager em = getEntityManager();
@@ -55,5 +56,21 @@ public class DinnerEventFacade {
         } finally {
             em.close();
         }
+    }
+
+
+
+    //Delete DinnerEvent
+    public DinnerEventDTO deleteDinnerEvent(Long id) {
+        EntityManager em = getEntityManager();
+        Dinnerevent dinnerEvent = em.find(Dinnerevent.class, id);
+        try {
+            em.getTransaction().begin();
+            em.remove(dinnerEvent);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new DinnerEventDTO(dinnerEvent);
     }
 }

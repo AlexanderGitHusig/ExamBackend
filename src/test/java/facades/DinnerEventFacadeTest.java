@@ -86,4 +86,11 @@ public class DinnerEventFacadeTest {
         assertEquals(2, dinnerEvents.size()); // Made 2 events, so 2 is expected.
     }
 
+    @Test
+    public void testDeleteDinnerEvent() {
+        facade.deleteDinnerEvent(dinnerevent1.getId());
+        List<DinnerEventDTO> dinnerEvents = facade.getAllDinnerEvents();
+        assertEquals(1, dinnerEvents.size()); // expected to be 1 as we deleted 1 in the test
+    }
+
 }
