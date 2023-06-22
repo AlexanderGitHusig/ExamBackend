@@ -32,8 +32,6 @@ public class Assignment {
     @JoinColumn(name = "dinnerevent_id")
     private Dinnerevent dinnerevent;
 
-
-
     @ManyToMany(mappedBy = "assignmentList")
     private Set<User> users = new HashSet<>();
 

@@ -58,4 +58,18 @@ public class AssignmentFacade {
         return AssignmentDTO.getDtos(assignments);
     }
 
+    public void deleteAssignment(Long id) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Assignment assignment = em.find(Assignment.class, id);
+            if (assignment != null) {
+                em.remove(assignment);
+            }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
+
 }

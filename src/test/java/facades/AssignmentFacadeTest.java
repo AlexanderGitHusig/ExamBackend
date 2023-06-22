@@ -60,5 +60,9 @@ public class AssignmentFacadeTest {
         assertEquals(2, facade.getAllAssignments().size());
     }
 
-
+    @Test
+    public void testDeleteAssignment() {
+        facade.deleteAssignment(a1.getId());
+        assertEquals(1, facade.getAllAssignments().size());
+    }
 }
